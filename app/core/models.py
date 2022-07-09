@@ -3,9 +3,9 @@ DataBase Model
 """
 from django.db import models
 from django.contrib.auth.models import (
-     AbstractUser,
+     AbstractBaseUser,
      BaseUserManager,
-     PermissionsMixin
+     PermissionsMixin,
 )
 
 
@@ -21,7 +21,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     """User in the system."""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
