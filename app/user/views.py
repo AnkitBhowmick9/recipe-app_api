@@ -1,7 +1,7 @@
 """
 Views for the user API.
 """
-from rest_framwork import generics
+from rest_framework import generics
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 

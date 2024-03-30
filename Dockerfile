@@ -3,12 +3,19 @@ LABEL maintainer="londonappdeveloper.com"
 
 ENV PYTHONUNBUFFERED 1
 
+# Copy the requirements.txt file to temp in docker image
+# same as app , workdir -> working directory in docker image
+# we don't need to add path externally as it will handled by workdir
+#
 COPY ./requirements.txt /tmp/requirements.txt
+# below line added, after c-18, requirements.dev.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /app
 WORKDIR /app
 EXPOSE 8000
 
+# below line added, after c-18, requirements.dev.txt
+# create build argument and set it to false
 ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
@@ -16,6 +23,8 @@ RUN python -m venv /py && \
     apk add --update --no-cache --virtual .tmp-build-deps \
         build-base postgresql-dev musl-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
+    # below line added, after c-18, requirements.dev.txt, shell script
+    # fi &&\ actually used to end the if block
     if [ $DEV = "true" ]; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     fi && \
